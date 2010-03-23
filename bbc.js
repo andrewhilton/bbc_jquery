@@ -35,8 +35,8 @@ function getNextData(key,outlet){
 }
 
 function makeAjaxCall(feed_url) { 
-    if(typeof (window.glow) == 'object')      { return makeAjaxCall_glow(feed_url);   }
-    if(typeof (window.jQuery) == 'function')  { return makeAjaxCall_jquery(feed_url); }
+    if(typeof (window.glow) == 'object' && location.host == "www.bbc.co.uk")      { return makeAjaxCall_glow(feed_url);   }
+    if(typeof (window.jQuery) == 'function')                                      { return makeAjaxCall_jquery(feed_url); }
     
 }
 
