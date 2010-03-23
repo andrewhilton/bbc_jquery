@@ -34,19 +34,30 @@ function getNextData(key,outlet){
     return nowData.schedule.next;
 }
 
-function makeAjaxCall(feed_url) {
-    var jsonData = null;
-
-    $.ajax({
-               url: feed_url,
-               async: false,
-               dataType: 'json',
-               success: function (json) {
-                   jsonData = json;
-               }
-           });
-    return jsonData;
+function makeAjaxCall(feed_url) { 
+    if(typeof (window.glow) == 'object')      { return makeAjaxCall_glow(feed_url);   }
+    if(typeof (window.jQuery) == 'function')  { return makeAjaxCall_jquery(feed_url); }
+    
 }
+
+function makeAjaxCall_jquery(feed_url) {
+  var jsonData = null;  
+        $.ajax({  url: feed_url,  
+                  async: false,   
+                  dataType: 'json',
+                  success: function (json) {jsonData = json;}
+                });
+        return jsonData;
+}
+
+function makeAjaxCall_glow(feed_url) {
+   var response =null;
+   var request = glow.net.get(feed_url, { async: false, 
+                                          onLoad: function(data)   { response = data.json();}, 
+                                          onError: function(data)  { response = data.statusText();} 
+                              });
+   return response;
+ }
 
 function getStationLogoPath(key) {
     var iplayer_key = convertProgrammesKeyToiPlayerKey(key);
